@@ -2,5 +2,12 @@
 __pycache__/
 *.py[cod]
 
+# Python build artifacts
+build/
+*.egg-info/
+
+# Rebuildable local Knowledge Connection index state
+.knowledge-connection/
+
 # macOS Finder metadata
 .DS_Store

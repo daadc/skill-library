@@ -25,6 +25,7 @@ IGNORED_DIRECTORIES = {
     "__pycache__",
     ".pytest_cache",
     ".mypy_cache",
+    ".knowledge-connection",
     "build",
     "dist",
 }
@@ -60,16 +61,32 @@ class GraphBuilder:
         self.pending_imports: list[PendingImport] = []
         self._source_nodes_by_domain: dict[str, list[str]] = defaultdict(list)
 
-    def build(self, max_files: int) -> GraphSnapshot:
+    def build(
+        self,
+        max_files: int,
+        paths: list[Path] | None = None,
+        seed_nodes: dict[str, Node] | None = None,
+        seed_edges: tuple[Edge, ...] | None = None,
+        total_files: int | None = None,
+    ) -> GraphSnapshot:
         if not self.root.exists() or not self.root.is_dir():
             raise ServiceError("invalid_root", "The requested root is not a readable directory.")
         if not 1 <= max_files <= 5_000:
             raise ServiceError("invalid_input", "max_files must be between 1 and 5000.")
 
         started = time.perf_counter()
-        accepted_files = 0
-        for path in self._candidate_files():
-            accepted_files += 1
+        if seed_nodes:
+            self.nodes.update(seed_nodes)
+            for node in seed_nodes.values():
+                if node.kind == "source":
+                    self._source_nodes_by_domain[str(node.attributes.get("domain", ""))].append(node.id)
+        if seed_edges:
+            self.edges.extend(seed_edges)
+        accepted_files = len(paths) if paths is not None else 0
+        candidates = paths if paths is not None else self._candidate_files()
+        for path in candidates:
+            if paths is None:
+                accepted_files += 1
             if accepted_files > max_files:
                 raise ServiceError(
                     "resource_limit",
@@ -94,7 +111,7 @@ class GraphBuilder:
         report = IndexReport(
             snapshot_id=snapshot_id,
             root_name=self.root.name,
-            files_indexed=self.files_indexed,
+            files_indexed=total_files if total_files is not None else self.files_indexed,
             files_skipped=self.files_skipped,
             nodes=len(self.nodes),
             edges=len(self.edges),
@@ -103,6 +120,11 @@ class GraphBuilder:
             skipped=self.skipped,
         )
         return GraphSnapshot(snapshot_id=snapshot_id, nodes=dict(self.nodes), edges=tuple(self.edges), report=report)
+
+    def candidate_files(self) -> list[Path]:
+        """Return only files accepted by the same root and extension policy as indexing."""
+
+        return list(self._candidate_files())
 
     def _candidate_files(self) -> Iterable[Path]:
         for path in sorted(self.root.rglob("*")):

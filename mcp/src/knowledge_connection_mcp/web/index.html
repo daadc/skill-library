@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="color-scheme" content="light" />
+    <title>Knowledge Connection Workbench</title>
+    <link rel="stylesheet" href="/styles.css" />
+  </head>
+  <body>
+    <header class="topbar">
+      <div>
+        <p class="eyebrow">LOCAL · READ ONLY · TRACEABLE</p>
+        <h1>Knowledge Connection</h1>
+      </div>
+      <div class="status-group" aria-live="polite">
+        <span id="snapshot-status" class="status-chip">检查索引状态…</span>
+        <button id="refresh-button" class="button button-secondary" type="button">显式刷新索引</button>
+      </div>
+    </header>
+
+    <main class="workspace">
+      <section class="search-panel" aria-labelledby="search-heading">
+        <div class="section-heading">
+          <p class="eyebrow">QUERY WORKBENCH</p>
+          <h2 id="search-heading">搜索知识、来源与代码符号</h2>
+          <p>结果保留相对路径、行号和关系理由。词项关联仅用于探索，不等同于证据。</p>
+        </div>
+        <form id="search-form" class="search-form">
+          <label for="query-input">检索问题或符号</label>
+          <div class="query-row">
+            <input id="query-input" name="query" maxlength="500" placeholder="例如：受约束 Agent 的验证流程" required />
+            <button class="button button-primary" type="submit">搜索</button>
+          </div>
+        </form>
+        <div id="message" class="message" role="status"></div>
+        <div id="results" class="results" aria-live="polite"></div>
+      </section>
+
+      <aside class="detail-panel" aria-labelledby="detail-heading">
+        <div class="section-heading compact">
+          <p class="eyebrow">EVIDENCE INSPECTOR</p>
+          <h2 id="detail-heading">选择一个结果</h2>
+        </div>
+        <div id="detail" class="empty-state">搜索后可查看节点正文、定位、直接关系和受预算约束的上下文包。</div>
+      </aside>
+    </main>
+
+    <footer>
+      <span>仅绑定本机回环地址。</span>
+      <span>不执行源代码，不修改被索引文件，不发起网络请求。</span>
+    </footer>
+    <script src="/app.js" defer></script>
+  </body>
+</html>

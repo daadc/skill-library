@@ -1,4 +1,4 @@
-"""Service layer for indexing and querying a single, bounded repository."""
+"""Service layer for bounded local indexing, persistence, and knowledge queries."""
 
 from __future__ import annotations
 
@@ -9,7 +9,8 @@ from pathlib import Path
 from typing import Any
 
 from .indexer import GraphBuilder, _is_relative_to
-from .models import Edge, GraphSnapshot, ServiceError, truncate
+from .models import GraphSnapshot, ServiceError, truncate
+from .storage import LocalSnapshotStore, build_manifest
 
 MAX_LIMIT = 50
 MAX_DEPTH = 3
@@ -17,11 +18,12 @@ MAX_CONTEXT_CHARS = 20_000
 
 
 class KnowledgeConnectionService:
-    """Holds the most recent complete read-only graph snapshot in memory."""
+    """Owns one allowed root and its latest complete, read-only graph snapshot."""
 
     def __init__(self, allowed_root: Path) -> None:
         self.allowed_root = allowed_root.resolve()
         self._snapshot: GraphSnapshot | None = None
+        self._store: LocalSnapshotStore | None = None
         self._lock = threading.RLock()
 
     def index_repository(
@@ -30,18 +32,100 @@ class KnowledgeConnectionService:
         include_code: bool = True,
         include_knowledge: bool = True,
         max_files: int = 5_000,
+        force: bool = False,
     ) -> dict[str, Any]:
+        """Load a matching local snapshot or explicitly build and persist a new one."""
+
         if not include_code and not include_knowledge:
             raise ServiceError("invalid_input", "At least one of include_code or include_knowledge must be true.")
         target_root = self._resolve_root(root)
-        candidate = GraphBuilder(
-            target_root,
-            include_code=include_code,
-            include_knowledge=include_knowledge,
-        ).build(max_files=max_files)
+        settings = {
+            "include_code": include_code,
+            "include_knowledge": include_knowledge,
+            "max_files": max_files,
+        }
+        builder = GraphBuilder(target_root, include_code=include_code, include_knowledge=include_knowledge)
+        paths = builder.candidate_files()
+        if len(paths) > max_files:
+            raise ServiceError(
+                "resource_limit",
+                "The repository exceeds the configured max_files limit.",
+                max_files=max_files,
+            )
+        manifest = build_manifest(target_root, paths)
+        store = LocalSnapshotStore(target_root)
+        if not force and store.has_matching_manifest(manifest, settings):
+            cached = store.load_snapshot()
+            if cached is not None:
+                with self._lock:
+                    self._snapshot = cached
+                    self._store = store
+                return {**cached.report.to_dict(), "index_mode": "cached", "changed_files": 0}
+
+        previous_snapshot = store.load_snapshot()
+        previous_manifest = store.manifest() if previous_snapshot is not None else {}
+        changed_paths = _changed_paths(previous_manifest, manifest)
+        changed_files = len(changed_paths) if previous_snapshot is not None else len(manifest)
+        incremental = previous_snapshot is not None and _can_incrementally_rebuild(changed_paths)
+        if incremental:
+            current_paths = {path.relative_to(target_root).as_posix(): path for path in paths}
+            seeded_nodes = {
+                node_id: node
+                for node_id, node in previous_snapshot.nodes.items()
+                if node.path not in changed_paths
+            }
+            seeded_ids = set(seeded_nodes)
+            seeded_edges = tuple(
+                edge
+                for edge in previous_snapshot.edges
+                if edge.source in seeded_ids and edge.target in seeded_ids
+            )
+            candidate = builder.build(
+                max_files=max_files,
+                paths=[current_paths[path] for path in changed_paths if path in current_paths],
+                seed_nodes=seeded_nodes,
+                seed_edges=seeded_edges,
+                total_files=len(paths),
+            )
+        else:
+            candidate = builder.build(max_files=max_files)
+        store.save_snapshot(candidate, manifest, settings)
         with self._lock:
             self._snapshot = candidate
-        return candidate.report.to_dict()
+            self._store = store
+        return {
+            **candidate.report.to_dict(),
+            "index_mode": "full" if previous_snapshot is None else ("incremental" if incremental else "refreshed"),
+            "changed_files": changed_files,
+        }
+
+    def refresh_repository(
+        self,
+        root: str | None = None,
+        include_code: bool = True,
+        include_knowledge: bool = True,
+        max_files: int = 5_000,
+    ) -> dict[str, Any]:
+        """Force a fresh graph build while retaining the last successful in-memory snapshot on failure."""
+
+        return self.index_repository(
+            root=root,
+            include_code=include_code,
+            include_knowledge=include_knowledge,
+            max_files=max_files,
+            force=True,
+        )
+
+    def index_status(self, root: str | None = None) -> dict[str, Any]:
+        target_root = self._resolve_root(root)
+        store = LocalSnapshotStore(target_root)
+        status = store.status()
+        with self._lock:
+            if self._snapshot is not None and self._store and self._store.root == target_root:
+                status["active_snapshot_id"] = self._snapshot.snapshot_id
+            else:
+                status["active_snapshot_id"] = None
+        return status
 
     def search_knowledge(
         self,
@@ -61,11 +145,16 @@ class KnowledgeConnectionService:
         else:
             wanted = accepted_kinds
 
+        fts_bonus: dict[str, int] = {}
+        if self._store is not None:
+            for rank, node_id in enumerate(self._store.fts_node_ids(query, limit=MAX_LIMIT)):
+                fts_bonus[node_id] = max(1, 30 - rank)
+
         scored: list[tuple[int, str, str]] = []
         for node in snapshot.nodes.values():
             if node.kind not in wanted:
                 continue
-            score = _score_node(query, node.kind, node.title, node.content, node.attributes)
+            score = _score_node(query, node.kind, node.title, node.content, node.attributes) + fts_bonus.get(node.id, 0)
             if score:
                 scored.append((score, node.title.casefold(), node.id))
         scored.sort(key=lambda item: (-item[0], item[1], item[2]))
@@ -75,6 +164,7 @@ class KnowledgeConnectionService:
             "query": query,
             "matches": matches,
             "total_candidates": len(scored),
+            "ranking": "field-weighted + optional local FTS5 bonus",
         }
 
     def get_node(self, node_id: str, include_content: bool = True) -> dict[str, Any]:
@@ -83,15 +173,8 @@ class KnowledgeConnectionService:
         if node is None:
             raise ServiceError("not_found", "The requested node does not exist in the current snapshot.", node_id=node_id)
         detail = node.detail() if include_content else node.summary()
-        relationships = [
-            edge.to_dict(direction)
-            for edge, direction in snapshot.related(node_id)[:MAX_LIMIT]
-        ]
-        return {
-            "snapshot_id": snapshot.snapshot_id,
-            "node": detail,
-            "relationships": relationships,
-        }
+        relationships = [edge.to_dict(direction) for edge, direction in snapshot.related(node_id)[:MAX_LIMIT]]
+        return {"snapshot_id": snapshot.snapshot_id, "node": detail, "relationships": relationships}
 
     def explore_connections(
         self,
@@ -230,6 +313,17 @@ class KnowledgeConnectionService:
             return self._snapshot
 
 
+def _changed_paths(previous: dict[str, str], current: dict[str, str]) -> set[str]:
+    all_paths = set(previous).union(current)
+    return {path for path in all_paths if previous.get(path) != current.get(path)}
+
+
+def _can_incrementally_rebuild(changed_paths: set[str]) -> bool:
+    """Only Markdown section changes are safely composable without re-evaluating code imports/calls."""
+
+    return bool(changed_paths) and all(path.endswith(".md") for path in changed_paths)
+
+
 def _validate_query(query: str) -> str:
     if not isinstance(query, str) or not query.strip():
         raise ServiceError("invalid_input", "query must contain non-whitespace text.")
@@ -256,9 +350,6 @@ def _score_node(
     content_folded = content.casefold()
     attribute_text = " ".join(str(value) for value in attributes.values()).casefold()
     document_title = str(attributes.get("document_title", "")).casefold()
-    # This is a knowledge-oriented tool. A knowledge-specific boost is applied
-    # only after textual evidence exists, so unrelated headings never become
-    # candidates merely because of their node type.
     score = 0
     if query_folded in title_folded:
         score += 100
@@ -268,8 +359,7 @@ def _score_node(
         score += 20
     if document_title and query_folded in document_title:
         score += 60
-    query_terms = _search_terms(query)
-    for term in query_terms:
+    for term in _search_terms(query):
         if term in title_folded:
             score += 18
         elif term in content_folded:

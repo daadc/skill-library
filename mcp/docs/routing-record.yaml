@@ -2,12 +2,12 @@ routing_record:
   task_id: "ast-knowledge-mcp-20260825"
   title: "本地 AST 知识图谱与快速检索 MCP"
   created_at: "2026-08-25"
-  framework_state: "DISCOVERY"
+  framework_state: "VERIFY"
   risk_tier: "R1"
   human_owner: "用户（产品优先级与未来发布决策）"
   outcome_and_non_goals:
     - "为 AI 提供从知识卡与 Python 代码结构中快速、可追溯地检索知识的只读 MCP 服务。"
-    - "不在本轮实现多语言 Tree-sitter/LSP、向量数据库、联网、后台守护或对被索引项目的写操作。"
+    - "本轮已完成 CLI、SQLite 派生状态与本地 loopback 工作台；不实现多语言 Tree-sitter/LSP、向量数据库、联网、后台守护、远程访问、认证或对被索引项目的写操作。"
   facts:
     - statement: "用户要求借鉴 codebase-memory-mcp 的 AST 分析思路，将实现放入当前项目的 mcp 目录。"
       evidence: "用户请求；mcp/docs/research-notes.md"
@@ -15,6 +15,8 @@ routing_record:
       evidence: "README.md；本地目录检查"
     - statement: "MCP 工具可以通过 JSON Schema 暴露结构化输入和输出。"
       evidence: "https://modelcontextprotocol.io/specification/2026-07-28/server/tools"
+    - statement: "P0 CLI、P1 SQLite 快照/文件指纹/FTS5 与 Markdown 增量刷新、P2 loopback 工作台已完成并通过自动化测试。"
+      evidence: "mcp/docs/p0-p2-verification-report.md"
   assumptions_and_unknowns:
     - statement: "Python AST 与 Markdown/YAML 语义结构足以覆盖本项目的第一个高价值检索切片。"
       validation_or_escalation: "用本仓库知识卡与合成 Python 示例执行端到端检索测试；如未满足，再由用户决定是否加入 Tree-sitter。"
@@ -58,15 +60,15 @@ routing_record:
       expected_handoff: "证据审校结论和复查触发条件"
   deliberately_not_selected:
     - role: "frontend-design-engineer"
-      reason: "本轮交付 stdio MCP 服务，不含 UI。"
+      reason: "本轮采用受限静态本地工作台，不引入独立设计系统、远程部署或协作 UI。"
     - role: "data-engineer"
-      reason: "本轮使用内存索引，不引入数据库或迁移。"
+      reason: "本轮采用标准库 SQLite 派生快照，不引入外部数据库、数据管道或迁移服务。"
     - role: "platform-sre-engineer"
       reason: "仅本地隔离运行，不部署、不开后台守护进程，也不定义生产 SLO。"
     - role: "secure-delivery-engineer"
       reason: "本轮不涉及 CI/CD、容器、密钥、授权或外部发布；依赖与路径安全由实现与质量测试覆盖。"
   allowed_actions:
-    - "在当前仓库 mcp/** 范围创建或修改本地代码、文档和测试。"
+    - "在当前仓库 mcp/** 与根 `.gitignore` 范围创建或修改本地代码、文档和测试。"
     - "安装开发依赖并在隔离环境中执行测试和本地 MCP smoke test。"
     - "读取公开官方文档开展调研。"
   blocked_actions_and_human_approvals:
@@ -83,11 +85,11 @@ routing_record:
     allowed_environment: "local"
   validation_and_stop_conditions:
     - "任何解析器试图读取索引根目录外的路径时，拒绝请求且不读取文件。"
-    - "任何工具产生写入、代码执行或网络访问需求时，停止并升级为新的范围决策。"
+    - "任何工具产生对被索引源文件的写入、代码执行、远程网络访问或非 loopback 监听需求时，停止并升级为新的范围决策。"
     - "若 Python 3.11 或 MCP SDK 不兼容，停止使用该库并以兼容版本或降级方案记录原因。"
     - "核心检索、详情、邻域和上下文包的验收测试均须通过后才能进入 VERIFY。"
   audit_links:
     - "mcp/docs/research-notes.md"
     - "https://github.com/DeusData/codebase-memory-mcp"
     - "https://modelcontextprotocol.io/specification/2026-07-28/server/tools"
-  next_state_condition: "产品简报完成、范围已界定、假设可通过本地测试验证且无需要用户决策的阻塞项。"
+  next_state_condition: "P0-P2 验证报告、完整回归和用户授权的 Git 提交/推送完成后进入 RELEASE。"

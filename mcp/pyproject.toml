@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "knowledge-connection-mcp"
-version = "0.1.0"
+version = "0.2.0"
 description = "A read-only MCP server that connects knowledge cards and Python AST symbols."
 readme = "README.md"
 requires-python = ">=3.10"
@@ -13,6 +13,7 @@ dependencies = [
 ]
 
 [project.scripts]
+knowledge-connection = "knowledge_connection_mcp.cli:main"
 knowledge-connection-mcp = "knowledge_connection_mcp.server:main"
 
 [tool.setuptools]
@@ -20,3 +21,6 @@ package-dir = {"" = "src"}
 
 [tool.setuptools.packages.find]
 where = ["src"]
+
+[tool.setuptools.package-data]
+knowledge_connection_mcp = ["web/*.html", "web/*.css", "web/*.js"]

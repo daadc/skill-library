@@ -33,8 +33,8 @@ def create_server(allowed_root: Path) -> FastMCP:
     @server.tool(
         name="index_repository",
         description=(
-            "Build a new in-memory, read-only graph for the allowed repository root. "
-            "Parses knowledge Markdown/YAML and Python AST; does not write, execute, or fetch files."
+            "Build or reload a local persistent, read-only graph for the allowed repository root. "
+            "Parses knowledge Markdown/YAML and Python AST; does not write source files, execute code, or fetch data."
         ),
         structured_output=True,
     )
@@ -47,6 +47,37 @@ def create_server(allowed_root: Path) -> FastMCP:
         return _run_tool(
             "index_repository",
             service.index_repository,
+            root=root,
+            include_code=include_code,
+            include_knowledge=include_knowledge,
+            max_files=max_files,
+        )
+
+    @server.tool(
+        name="index_status",
+        description="Show whether a local persistent graph snapshot exists and whether it is active in this session.",
+        structured_output=True,
+    )
+    def index_status(root: str | None = None) -> dict[str, Any]:
+        return _run_tool("index_status", service.index_status, root=root)
+
+    @server.tool(
+        name="refresh_repository",
+        description=(
+            "Explicitly rebuild the local persistent graph after source changes. "
+            "This writes only derived state under .knowledge-connection, never indexed source files."
+        ),
+        structured_output=True,
+    )
+    def refresh_repository(
+        root: str | None = None,
+        include_code: bool = True,
+        include_knowledge: bool = True,
+        max_files: int = 5_000,
+    ) -> dict[str, Any]:
+        return _run_tool(
+            "refresh_repository",
+            service.refresh_repository,
             root=root,
             include_code=include_code,
             include_knowledge=include_knowledge,

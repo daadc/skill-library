@@ -29,6 +29,8 @@ async def run_smoke_test() -> None:
             names = {tool.name for tool in tools.tools}
             expected = {
                 "index_repository",
+                "index_status",
+                "refresh_repository",
                 "search_knowledge",
                 "get_node",
                 "explore_connections",
@@ -36,8 +38,12 @@ async def run_smoke_test() -> None:
             }
             assert names == expected, f"Unexpected MCP tool set: {sorted(names)}"
 
+            before = await session.call_tool("index_status", {})
+            assert not before.isError, before
             indexed = await session.call_tool("index_repository", {})
             assert not indexed.isError, indexed
+            refreshed = await session.call_tool("refresh_repository", {})
+            assert not refreshed.isError, refreshed
             searched = await session.call_tool(
                 "search_knowledge",
                 {"query": "需求分析", "kinds": ["knowledge"], "limit": 3},
@@ -45,7 +51,7 @@ async def run_smoke_test() -> None:
             assert not searched.isError, searched
             structured = getattr(searched, "structuredContent", None)
             assert structured and structured["matches"], structured
-            print("MCP stdio smoke test passed: five tools registered; index and search returned structured output.")
+            print("MCP stdio smoke test passed: seven tools registered; status, index, refresh, and search returned structured output.")
 
 
 if __name__ == "__main__":

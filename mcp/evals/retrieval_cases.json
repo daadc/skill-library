@@ -1,0 +1,29 @@
+{
+  "version": 1,
+  "cases": [
+    {
+      "id": "constrained-agent-framework",
+      "query": "受约束 Agent",
+      "expected_path_contains": "constrained-agentic-development-framework.md",
+      "accepted_kinds": ["knowledge"]
+    },
+    {
+      "id": "secure-delivery",
+      "query": "安全交付",
+      "expected_path_contains": "knowledge/secure-delivery",
+      "accepted_kinds": ["knowledge", "scenario"]
+    },
+    {
+      "id": "product-discovery",
+      "query": "需求不是功能列表",
+      "expected_path_contains": "knowledge/product-discovery/knowledge-cards.md",
+      "accepted_kinds": ["knowledge"]
+    },
+    {
+      "id": "observability-slo",
+      "query": "SLO",
+      "expected_path_contains": "knowledge/observability-performance",
+      "accepted_kinds": ["knowledge"]
+    }
+  ]
+}

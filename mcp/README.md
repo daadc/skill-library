@@ -1,33 +1,62 @@
 # Knowledge Connection MCP
 
-`knowledge-connection-mcp` 是一个**本地、只读**的 MCP 服务。它将本项目的 Markdown 知识卡、场景卡和 `sources.yaml` 解析成可追溯知识节点，同时用 Python 标准库 AST 提取模块、类、函数、方法、导入和可静态确定的直接调用。AI 因而可以先检索小型结构化结果，再沿“引用、场景、代码关系、术语关联”展开上下文，而不必无差别读取大量文件。
+`knowledge-connection-mcp` 是一个**本地优先、可追溯、默认只读**的知识与代码检索工具。它将项目中的 Markdown 知识卡、场景卡、`sources.yaml` 和 Python AST 转换为统一图谱，并通过 MCP、CLI 与本地知识工作台提供一致的检索接口。
 
-> 首版实现有意保持边界：它不执行代码、不联网、不写入被索引仓库、不启动后台守护进程；代码 AST 仅保证 Python。它并非 `codebase-memory-mcp` 的复刻，也不承诺其多语言或性能结果。
+> **P0、P1、P2 已实现。** 本版本包含交互式 CLI 与离线评测、SQLite 持久化和文件级 Markdown 增量刷新，以及只绑定本机回环地址的知识工作台。它不会执行源代码、联网抓取、写入被索引源文件或自动修改 MCP 客户端配置。
 
-## 能力与关系边界
+## 当前能力
 
-| 输入来源 | 提取节点 | 可解释关系 | 明确不推断 |
-|---|---|---|---|
-| `knowledge/**/*.md` | `knowledge`、`scenario` | `cites`、`shares_terms` | 引用之外的因果或事实关系 |
-| `knowledge/**/sources.yaml` | `source` | 被知识卡 `cites` | 任意 YAML 的执行语义 |
-| `**/*.py` | `module`、`class`、`function`、`method` | `contains`、`imports`、可唯一解析的 `calls` | 反射、动态导入、运行时派发、类型关系 |
+| 能力层 | 已实现内容 | 关键边界 |
+|---|---|---|
+| 知识图谱 | Markdown/YAML 知识、场景、来源；Python 模块/类/函数/方法、导入和可确定的直接调用。 | Python 是首个保证支持的 AST 语言；动态派发、反射和运行时导入不推断。 |
+| 检索 | 字段化确定性评分、知识节点优先、SQLite FTS5 加分、节点详情、关系探索与受预算上下文包。 | `shares_terms` 是弱词项关联，不是引用、因果或授权证据。 |
+| P0 CLI | `index`、`status`、`refresh`、`search`、`node`、`connections`、`context`、`eval` 与 `workbench`。 | 所有命令只读被索引内容；刷新只写可再生成状态。 |
+| P1 状态 | `.knowledge-connection/graph.sqlite3` 保存派生快照、文件指纹、关系和 FTS5 索引。 | 状态目录可删除重建，已被 `.gitignore` 忽略；不保存到远程服务。 |
+| P2 工作台 | 本地搜索、节点详情、两跳关系、上下文包、索引状态和显式刷新。 | 默认且仅允许 `127.0.0.1`、`localhost` 或 `::1`；没有远程访问、认证或写入界面。 |
+| MCP | `index_repository`、`index_status`、`refresh_repository`、`search_knowledge`、`get_node`、`explore_connections`、`build_context_pack`。 | MCP 工具保持窄化、参数受限和可解释。 |
 
-`shares_terms` 仅表示规范化文本词项重合，其结果会附带关联词说明，不能被当成引用、依赖或因果结论。
+## 安装与运行
 
-## 安装与本地运行
-
-服务要求 **Python 3.10+** 与 [官方 MCP Python SDK][1]。当前项目包含 `pyproject.toml`，可由 `uv` 管理依赖。以下命令把根目录限定为整个 `skill-library` 仓库：
+项目要求 **Python 3.10+**。在 `mcp/` 目录中使用 `uv` 安装并运行本项目：
 
 ```bash
 cd /Users/zhangshaowei/code/skill-library/mcp
-uv run knowledge-connection-mcp --root /Users/zhangshaowei/code/skill-library
+uv run knowledge-connection --root .. index
 ```
 
-该进程通过标准输入/输出传输 MCP 协议。请不要把运行日志或普通文本写入 stdout；实现将异常日志写至 stderr，以避免破坏协议流。
+首次运行会在索引根目录创建 `.knowledge-connection/graph.sqlite3`。它是派生缓存，不包含任何源文件修改；删除该目录即可让下一次索引完整重建。
 
-## MCP 客户端配置样例
+### CLI 示例
 
-将下列示例中的绝对路径替换为你的实际路径，并在 MCP 客户端中添加为 stdio 服务。此示例只供手动配置；本实现不会自动修改任何客户端设置。
+```bash
+# 查看本地状态；不触发重建
+uv run knowledge-connection --root .. --json status
+
+# 构建或加载匹配快照
+uv run knowledge-connection --root .. --json index
+
+# 主题、知识卡或 Python 符号检索
+uv run knowledge-connection --root .. --json search "安全交付" --kind knowledge --limit 5
+
+# 显式刷新；不会启动后台 watcher
+uv run knowledge-connection --root .. --json refresh
+
+# 用版本化离线案例评估检索回归
+uv run knowledge-connection --root .. --json eval --cases evals/retrieval_cases.json
+
+# 启动本地工作台；浏览器访问输出的回环 URL
+uv run knowledge-connection --root .. workbench --port 8765
+```
+
+`--root` 与 `--config` 必须出现在子命令之前。配置文件为只包含 `root` 字段的 JSON 对象，例如：
+
+```json
+{ "root": "/Users/zhangshaowei/code/skill-library" }
+```
+
+### MCP 客户端配置示例
+
+以下配置只供用户手动添加；本项目不会改写任何客户端配置。服务启动后先调用 `index_repository`，再调用检索工具。
 
 ```json
 {
@@ -47,61 +76,45 @@ uv run knowledge-connection-mcp --root /Users/zhangshaowei/code/skill-library
 }
 ```
 
-也可以通过 `KNOWLEDGE_MCP_ROOT` 环境变量设定允许根目录。传入的 `index_repository.root` 只能是该允许根目录本身或其子目录；任何父目录跳转或根目录外的路径都会被拒绝。
+## 工作台操作流程
 
-## 工具契约
+启动 `workbench` 后，浏览器访问控制台打印的 URL。工作台先加载持久快照，并提供以下不带权限升级的操作：搜索节点、查看路径/行号/原文、浏览至多两跳关系、创建 4,000 字符的上下文包，以及显式刷新派生索引。界面将词项关联标为“弱关联”，避免把词频关系误读为证据。
 
-| 工具 | 何时调用 | 输出要点 |
-|---|---|---|
-| `index_repository` | 会话开始、或源文件改变后。 | 新快照 ID、文件/节点/边计数、支持格式、跳过原因与耗时。 |
-| `search_knowledge` | 以主题、风险、验证、来源、符号或代码术语寻找入口。 | 有评分的节点摘要、相对路径、行号和匹配片段。 |
-| `get_node` | 需要阅读一个结果的完整受限内容，或查看其直接关系。 | 节点详情与带理由的出入边。 |
-| `explore_connections` | 需要连接知识原则、场景、来源与代码实现线索。 | 有方向、类型、距离和理由的受限邻域。 |
-| `build_context_pack` | 准备让 AI 回答、评审或编码的紧凑证据包。 | 受字符预算限制的正文、节点 ID 和定位/来源列表。 |
+工作台 API 仅接受固定端点：`/api/status`、`/api/search`、`/api/node`、`/api/connections`、`/api/context` 和 `/api/refresh`。它不会接受任意 URL、文件路径、SQL、命令或请求体。详见 [`docs/adr-0002-local-persistent-workbench.md`](docs/adr-0002-local-persistent-workbench.md)。
 
-所有列表 `limit` 最大为 50；邻域 `depth` 最大为 3；上下文包 `max_chars` 最大为 20,000。查询工具需要已经成功运行 `index_repository`；索引失败会保留最近一次成功的内存快照。
+## 安全、隐私与索引策略
 
-## 推荐 Agent 调用流程
+服务只处理允许根目录内的常规非符号链接 `.md`、`.yaml`、`.yml`、`.py` 文件；默认跳过 `.git`、虚拟环境、构建输出、缓存、`node_modules` 和自身状态目录。单文件最大 1 MB，默认最多 5,000 个文件。所有关系和正文都应被视为**待审阅数据**：检索命中不等于事实认证，也不等于执行授权。
 
-```text
-1. index_repository()
-2. search_knowledge(query="主题或符号")
-3. get_node(node_id) 或 explore_connections(node_id)
-4. build_context_pack(query="要解决的问题")
-5. AI 根据返回的路径、行号、来源 URL 与条件进行推理；不把 shares_terms 当作事实证明。
-```
-
-例如，用户询问“输入校验的工程原则以及代码中可能的实现入口”时，先以 `输入校验` 搜索知识节点，再扩展其 `cites` 和 `shares_terms`，最后以 `validate_input` 或同义术语搜索 Python 符号，并用上下文包把原则、风险、验证和实现定位一起交给 AI。
+持久化策略遵循以下原则：未变更文件的匹配快照直接加载；仅 Markdown 文件变化时，服务安全地保留未变更节点和边并增量重建变化文件；Python/YAML 变化或删除触发完整回退重建，以避免在导入、调用或来源引用关系上产生不完整图谱。刷新始终由用户、CLI 或 MCP 工具显式触发。
 
 ## 验证
 
-在 `mcp/` 目录运行：
-
 ```bash
+cd mcp
 PYTHONPATH=src python3 -m unittest discover -s tests -v
+PYTHONPATH=src python3 tests/smoke_mcp.py
+PYTHONPATH=src python3 -m knowledge_connection_mcp.cli --root .. --json eval --cases evals/retrieval_cases.json
 ```
 
-测试覆盖知识卡/来源/场景解析、Python AST 调用关系、确定性检索、上下文字符预算、未索引状态、资源上限、根目录隔离、未知节点和参数限制。完整产品与接口决策记录见 [`docs/`](docs/)。
-
-## 安全与隐私
-
-该服务只读取允许根目录中后缀为 `.md`、`.yaml`、`.yml`、`.py` 的常规非符号链接文件，并跳过 `.git`、虚拟环境、构建目录、缓存和 `node_modules`。单文件最大 1 MB，默认最多索引 5,000 个文件。工具不会读取根目录之外的内容、写入索引文件、执行代码或发起网络请求。
-
-所有工具调用都应在用户可察觉、可拒绝的 MCP 客户端环境中进行；这是 MCP 工具规范推荐的安全交互方式。[2]
+测试覆盖 Markdown/YAML/Python AST 解析、确定性检索、来源关系、字符预算、错误边界、SQLite 重载、缓存命中、Markdown 增量刷新、CLI 输出、loopback 工作台、静态资源、MCP stdio 与当前仓库检索评测。
 
 ## 项目文档
 
-| 文档 | 作用 |
+| 文档 | 用途 |
 |---|---|
-| [`docs/research-notes.md`](docs/research-notes.md) | 外部调研、证据、假设和范围。 |
-| [`docs/routing-record.yaml`](docs/routing-record.yaml) | 使用当前团队技能进行需求、架构、实现和验证的路由记录。 |
-| [`docs/product-brief.md`](docs/product-brief.md) | 目标、非目标、验收标准和验证计划。 |
-| [`docs/adr-0001-local-knowledge-graph.md`](docs/adr-0001-local-knowledge-graph.md) | 图谱与解析器选型的 ADR。 |
-| [`docs/interaction-contract.md`](docs/interaction-contract.md) | 五个 MCP 工具的输入、输出、错误与安全契约。 |
-| [`docs/verification-report.md`](docs/verification-report.md) | 自动化测试、stdio smoke test 与残余风险记录。 |
-| [`docs/evidence-audit.yaml`](docs/evidence-audit.yaml) | 调研主张、版本范围与权限边界的独立审校记录。 |
-| [`docs/current-repository-validation.md`](docs/current-repository-validation.md) | 当前 `skill-library` 仓库的真实索引、检索与排序改进记录。 |
-| [`docs/ROADMAP.md`](docs/ROADMAP.md) | CLI、持久化索引、检索质量、可选前端与团队治理的分阶段路线图。 |
+| [`docs/ROADMAP.md`](docs/ROADMAP.md) | P0-P2 实施状态及下一阶段治理方向。 |
+| [`docs/adr-0001-local-knowledge-graph.md`](docs/adr-0001-local-knowledge-graph.md) | 初始知识图谱与解析器决策。 |
+| [`docs/adr-0002-local-persistent-workbench.md`](docs/adr-0002-local-persistent-workbench.md) | 持久化、刷新、工作台与安全边界。 |
+| [`docs/interaction-contract.md`](docs/interaction-contract.md) | MCP 工具输入、输出与错误契约。 |
+| [`docs/current-repository-validation.md`](docs/current-repository-validation.md) | 当前 `skill-library` 仓库检索验证记录。 |
+| [`docs/p0-p2-verification-report.md`](docs/p0-p2-verification-report.md) | P0-P2 CLI、持久索引、MCP、工作台和安全边界验证证据。 |
+| [`docs/verification-report.md`](docs/verification-report.md) | 初始质量门禁与残余风险。 |
+| [`docs/evidence-audit.yaml`](docs/evidence-audit.yaml) | 调研主张与工具权限审校。 |
+
+## 后续范围
+
+P3 才会评估多仓库共享、远程访问、认证、写入型知识治理、发布工程和多语言 parser adapter。它们会引入新的权限、数据和发布影响，不能由当前本地只读服务自动开启。
 
 [1]: https://py.sdk.modelcontextprotocol.io/
 [2]: https://modelcontextprotocol.io/specification/2026-07-28/server/tools
