@@ -1,0 +1,41 @@
+sources:
+  - source_id: src-redis-persistence-latest
+    title: Redis persistence
+    author_or_organization: Redis Documentation
+    url: https://redis.io/docs/latest/operate/oss_and_stack/management/persistence/
+    source_kind: official-doc
+    access_class: A
+    version_or_date: "latest documentation; accessed 2026-08-25"
+    license_or_terms: "Public official documentation; exact command/configuration availability depends on Redis version and deployment."
+    claim_scope: "RDB, AOF, combined persistence, backup, recovery and durability tradeoffs."
+    review_due: 2026-11-25
+  - source_id: src-redis-replication-latest
+    title: Redis replication
+    author_or_organization: Redis Documentation
+    url: https://redis.io/docs/latest/operate/oss_and_stack/management/replication/
+    source_kind: official-doc
+    access_class: A
+    version_or_date: "latest documentation; accessed 2026-08-25"
+    license_or_terms: "Public official documentation."
+    claim_scope: "Replication mechanics, replicas, resynchronization and data-safety considerations."
+    review_due: 2026-11-25
+  - source_id: src-redis-sentinel-latest
+    title: High availability with Redis Sentinel
+    author_or_organization: Redis Documentation
+    url: https://redis.io/docs/latest/operate/oss_and_stack/management/sentinel/
+    source_kind: official-doc
+    access_class: A
+    version_or_date: "latest documentation; accessed 2026-08-25"
+    license_or_terms: "Public official documentation."
+    claim_scope: "Sentinel monitoring, notifications, automatic failover and configuration-provider behavior."
+    review_due: 2026-11-25
+  - source_id: src-book-redis-in-action
+    title: Redis in Action
+    author_or_organization: Josiah L. Carlson
+    url: https://www.manning.com/books/redis-in-action
+    source_kind: user-owned-book
+    access_class: C
+    version_or_date: "Manning publication"
+    license_or_terms: "Use only from a lawful user copy and only for private, non-substitutive knowledge cards."
+    claim_scope: "Private study and implementation questions; current official docs override version-specific behavior."
+    review_due: 2027-01-01

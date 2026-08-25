@@ -1,0 +1,41 @@
+sources:
+  - source_id: src-kubernetes-architecture-current
+    title: Kubernetes Cluster Architecture
+    author_or_organization: Kubernetes Documentation
+    url: https://kubernetes.io/docs/concepts/architecture/
+    source_kind: official-doc
+    access_class: A
+    version_or_date: "current documentation; accessed 2026-08-25"
+    license_or_terms: "Public Kubernetes documentation; retain attribution and verify current version before operational use."
+    claim_scope: "Control plane, node components, cluster add-ons, deployment variations."
+    review_due: 2026-11-25
+  - source_id: src-kubernetes-deployment-current
+    title: Deployments
+    author_or_organization: Kubernetes Documentation
+    url: https://kubernetes.io/docs/concepts/workloads/controllers/deployment/
+    source_kind: official-doc
+    access_class: A
+    version_or_date: "current documentation; accessed 2026-08-25"
+    license_or_terms: "Public Kubernetes documentation; examples are illustrative, not production defaults."
+    claim_scope: "Deployment desired state, rollout, rollback, selectors, update behavior."
+    review_due: 2026-11-25
+  - source_id: src-kubernetes-version-skew-2026
+    title: Version Skew Policy
+    author_or_organization: Kubernetes Documentation
+    url: https://kubernetes.io/releases/version-skew-policy/
+    source_kind: official-doc
+    access_class: A
+    version_or_date: "Kubernetes 1.36 policy page; accessed 2026-08-25"
+    license_or_terms: "Public Kubernetes documentation; managed service tooling may add constraints."
+    claim_scope: "Supported release branches, component compatibility and upgrade order."
+    review_due: 2026-10-25
+  - source_id: src-book-kubernetes-up-and-running-3e
+    title: Kubernetes: Up and Running, 3rd Edition
+    author_or_organization: Brendan Burns, Joe Beda, Kelsey Hightower, Lachlan Evenson
+    url: https://www.oreilly.com/library/view/kubernetes-up-and/9781098181796/
+    source_kind: user-owned-book
+    access_class: C
+    version_or_date: "Third edition, 2024"
+    license_or_terms: "Use only if the user supplies or lawfully owns a copy; retain locally and do not create a substitute summary."
+    claim_scope: "Private study questions and original decision cards; official docs remain source of truth for current behavior."
+    review_due: 2027-01-01

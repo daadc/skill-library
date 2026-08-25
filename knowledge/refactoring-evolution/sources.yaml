@@ -1,0 +1,28 @@
+sources:
+  - source_id: src-fowler-strangler-fig-2024
+    title: Martin Fowler — Strangler Fig
+    author_or_organization: Martin Fowler
+    url: https://martinfowler.com/bliki/StranglerFigApplication.html
+    source_kind: original-author-article
+    access_class: A
+    version_or_date: "published 2024-08-22; accessed 2026-08-25"
+    claim_scope: "Outcome-led, seam-oriented incremental legacy modernization and organizational change."
+    review_due: 2027-02-22
+  - source_id: src-ms-strangler-fig-2026
+    title: Microsoft Azure Architecture Center — Strangler Fig pattern
+    author_or_organization: Microsoft
+    url: https://learn.microsoft.com/en-us/azure/architecture/patterns/strangler-fig
+    source_kind: official-architecture-guidance
+    access_class: A
+    version_or_date: "page updated 2026-06-02; accessed 2026-08-25"
+    claim_scope: "Facade routing, incremental replacement, coexistence, data migration, ACL and rollback limitations."
+    review_due: 2026-12-02
+  - source_id: src-ms-domain-analysis-2026
+    title: Microsoft Azure Architecture Center — Use domain analysis to model microservices
+    author_or_organization: Microsoft
+    url: https://learn.microsoft.com/en-us/azure/architecture/microservices/model/domain-analysis
+    source_kind: official-architecture-guidance
+    access_class: A
+    version_or_date: "page updated 2026-02-25; accessed 2026-08-25"
+    claim_scope: "Business-capability boundaries, bounded contexts and Anti-Corruption Layer."
+    review_due: 2026-08-25

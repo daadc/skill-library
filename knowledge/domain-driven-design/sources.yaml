@@ -1,0 +1,37 @@
+sources:
+  - source_id: src-fowler-bounded-context-2014
+    title: Martin Fowler — Bounded Context
+    author_or_organization: Martin Fowler
+    url: https://martinfowler.com/bliki/BoundedContext.html
+    source_kind: original-author-article
+    access_class: A
+    version_or_date: "published 2014-01-15; accessed 2026-08-25"
+    claim_scope: "Multiple coherent models, ubiquitous language, bounded-context relationships and context maps."
+    review_due: 2027-02-25
+  - source_id: src-fowler-ddd-2020
+    title: Martin Fowler — Domain-Driven Design
+    author_or_organization: Martin Fowler
+    url: https://martinfowler.com/bliki/DomainDrivenDesign.html
+    source_kind: original-author-article
+    access_class: A
+    version_or_date: "published 2020-04-22; accessed 2026-08-25"
+    claim_scope: "DDD for complex domains, strategic design and tactical model vocabulary."
+    review_due: 2027-02-25
+  - source_id: src-ms-domain-analysis-2026
+    title: Microsoft Azure Architecture Center — Use domain analysis to model microservices
+    author_or_organization: Microsoft
+    url: https://learn.microsoft.com/en-us/azure/architecture/microservices/model/domain-analysis
+    source_kind: official-architecture-guidance
+    access_class: A
+    version_or_date: "page updated 2026-02-25; accessed 2026-08-25"
+    claim_scope: "Domain analysis, subdomain prioritization, bounded contexts and iterative microservice boundary selection."
+    review_due: 2026-08-25
+  - source_id: src-aws-hexagonal-overview
+    title: AWS Prescriptive Guidance — Hexagonal architectures overview
+    author_or_organization: AWS
+    url: https://docs.aws.amazon.com/prescriptive-guidance/latest/hexagonal-architectures/overview.html
+    source_kind: official-architecture-guidance
+    access_class: A
+    version_or_date: "accessed 2026-08-25"
+    claim_scope: "Business-logic-centered design, ports/adapters and dependency direction."
+    review_due: 2027-02-25

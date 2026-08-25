@@ -1,0 +1,37 @@
+sources:
+  - source_id: src-google-code-review
+    title: Google Engineering Practices — Code Review Introduction
+    author_or_organization: Google Engineering Practices
+    url: https://google.github.io/eng-practices/review/
+    source_kind: official-engineering-practice
+    access_class: A
+    version_or_date: "accessed 2026-08-25"
+    claim_scope: "Review dimensions and reviewer selection."
+    review_due: 2027-02-25
+  - source_id: src-google-code-health
+    title: Google Engineering Practices — The Standard of Code Review
+    author_or_organization: Google Engineering Practices
+    url: https://google.github.io/eng-practices/review/reviewer/standard.html
+    source_kind: official-engineering-practice
+    access_class: A
+    version_or_date: "accessed 2026-08-25"
+    claim_scope: "Continuous code-health improvement and review tradeoffs."
+    review_due: 2027-02-25
+  - source_id: src-google-release-engineering
+    title: Google SRE — Release Engineering
+    author_or_organization: Google SRE
+    url: https://sre.google/sre-book/release-engineering/
+    source_kind: official-engineering-practice
+    access_class: A
+    version_or_date: "accessed 2026-08-25"
+    claim_scope: "Repeatable release pipelines, hermetic builds, continuous testing, configuration and canary delivery."
+    review_due: 2027-02-25
+  - source_id: src-dora-metrics-2026
+    title: DORA's software delivery performance metrics
+    author_or_organization: DORA / Google Cloud
+    url: https://dora.dev/guides/dora-metrics/
+    source_kind: research-guidance
+    access_class: A
+    version_or_date: "page updated 2026-01-05; accessed 2026-08-25"
+    claim_scope: "Five metrics and continuous improvement guidance."
+    review_due: 2027-02-25

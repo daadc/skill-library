@@ -1,0 +1,64 @@
+sources:
+  - source_id: src-google-dev-doc-style-2026
+    title: Google Developer Documentation Style Guide
+    author_or_organization: Google
+    url: https://developers.google.com/style
+    source_kind: official-technical-writing-guidance
+    access_class: A
+    version_or_date: "updated 2026-04-27; accessed 2026-08-25"
+    claim_scope: "Clear, consistent developer documentation and project-specific style priority."
+    review_due: 2027-04-27
+  - source_id: src-gitlab-docs-as-code-2022
+    title: GitLab — Five fast facts about docs as code
+    author_or_organization: GitLab Technical Writing
+    url: https://about.gitlab.com/blog/five-fast-facts-about-docs-as-code-at-gitlab/
+    source_kind: practitioner-case-study
+    access_class: A
+    version_or_date: "published 2022-10-12; accessed 2026-08-25"
+    claim_scope: "Versioned documentation, definition of done, merge-request review, previews, CI checks and publication."
+    review_due: 2027-02-25
+  - source_id: src-google-cloud-adr-2024
+    title: Google Cloud — Architecture decision records overview
+    author_or_organization: Google Cloud
+    url: https://docs.cloud.google.com/architecture/architecture-decision-records
+    source_kind: official-architecture-guidance
+    access_class: A
+    version_or_date: "reviewed 2024-08-16; accessed 2026-08-25"
+    claim_scope: "ADR purpose, format, source-control proximity and decision-history value."
+    review_due: 2026-08-16
+  - source_id: src-ms-adr-2026
+    title: Microsoft Azure Well-Architected — Maintain an ADR
+    author_or_organization: Microsoft
+    url: https://learn.microsoft.com/en-us/azure/well-architected/architect-role/architecture-decision-record
+    source_kind: official-architecture-guidance
+    access_class: A
+    version_or_date: "updated 2026-04-13; accessed 2026-08-25"
+    claim_scope: "Append-only ADRs, status, supersession and workload documentation repository."
+    review_due: 2027-04-13
+  - source_id: src-openapi-3-2-2025
+    title: OpenAPI Specification v3.2.0
+    author_or_organization: OpenAPI Initiative
+    url: https://spec.openapis.org/oas/v3.2.0.html
+    source_kind: official-standard
+    access_class: A
+    version_or_date: "published 2025-09-19; accessed 2026-08-25"
+    claim_scope: "Versioned language-agnostic HTTP API descriptions and documentation/test generation uses."
+    review_due: 2026-09-19
+  - source_id: src-google-sre-managing-incidents
+    title: Google SRE — Managing Incidents
+    author_or_organization: Google SRE
+    url: https://sre.google/sre-book/managing-incidents/
+    source_kind: official-practitioner-book
+    access_class: A
+    version_or_date: "accessed 2026-08-25"
+    claim_scope: "Role separation, live incident state documents, handoffs, documented procedures and practice."
+    review_due: 2027-02-25
+  - source_id: src-diataxis-start-here
+    title: Diátaxis — Start here
+    author_or_organization: Daniele Procida
+    url: https://diataxis.fr/start-here/
+    source_kind: practitioner-framework
+    access_class: A
+    version_or_date: "accessed 2026-08-25"
+    claim_scope: "Tutorial/how-to/reference/explanation content classification."
+    review_due: 2027-02-25

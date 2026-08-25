@@ -1,0 +1,37 @@
+sources:
+  - source_id: src-refactoring-guru-pattern-catalog
+    title: Refactoring.Guru — The Catalog of Design Patterns
+    author_or_organization: Refactoring.Guru
+    url: https://refactoring.guru/design-patterns/catalog
+    source_kind: practitioner-reference
+    access_class: A
+    version_or_date: "accessed 2026-08-25"
+    claim_scope: "Classic creational, structural and behavioral pattern taxonomy."
+    review_due: 2027-02-25
+  - source_id: src-refactoring-guru-strategy
+    title: Refactoring.Guru — Strategy
+    author_or_organization: Refactoring.Guru
+    url: https://refactoring.guru/design-patterns/strategy
+    source_kind: practitioner-reference
+    access_class: A
+    version_or_date: "accessed 2026-08-25"
+    claim_scope: "Strategy intent, applicability, benefits and over-engineering tradeoffs."
+    review_due: 2027-02-25
+  - source_id: src-effective-go
+    title: Effective Go
+    author_or_organization: Go Project
+    url: https://go.dev/doc/effective_go
+    source_kind: official-language-guidance
+    access_class: A
+    version_or_date: "legacy guide; accessed 2026-08-25"
+    claim_scope: "Idiomatic Go, package design, small behavioral interfaces, clarity and error-handling conventions."
+    review_due: 2027-02-25
+  - source_id: src-ms-cloud-pattern-catalog-2026
+    title: Microsoft Azure Architecture Center — Cloud design patterns
+    author_or_organization: Microsoft
+    url: https://learn.microsoft.com/en-us/azure/architecture/patterns/
+    source_kind: official-architecture-guidance
+    access_class: A
+    version_or_date: "page updated 2026-06-03; accessed 2026-08-25"
+    claim_scope: "Technology-agnostic distributed-system patterns, tradeoffs and composability."
+    review_due: 2026-12-03

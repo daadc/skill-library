@@ -1,0 +1,28 @@
+sources:
+  - source_id: src-swe-book-larger-testing
+    title: Software Engineering at Google — Larger Testing
+    author_or_organization: Google / O'Reilly / Abseil
+    url: https://abseil.io/resources/swe-book/html/ch14.html
+    source_kind: practitioner-engineering-book
+    access_class: A
+    version_or_date: "accessed 2026-08-25"
+    claim_scope: "Small versus larger tests, fidelity/hermeticity, test gaps, ownership, large-test cost and scalable strategy."
+    review_due: 2027-02-25
+  - source_id: src-openapi-3-2-2025
+    title: OpenAPI Specification v3.2.0
+    author_or_organization: OpenAPI Initiative
+    url: https://spec.openapis.org/oas/v3.2.0.html
+    source_kind: official-standard
+    access_class: A
+    version_or_date: "published 2025-09-19; accessed 2026-08-25"
+    claim_scope: "Machine-readable HTTP API descriptions that support documentation, generation and testing."
+    review_due: 2026-09-19
+  - source_id: src-google-sre-slo
+    title: Google SRE — Service Level Objectives
+    author_or_organization: Google SRE
+    url: https://sre.google/sre-book/service-level-objectives/
+    source_kind: practitioner-engineering-book
+    access_class: A
+    version_or_date: "accessed 2026-08-25"
+    claim_scope: "User-centered SLIs/SLOs and error-budget driven release tradeoffs."
+    review_due: 2027-02-25

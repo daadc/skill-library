@@ -1,0 +1,39 @@
+routing_record:
+  task_id: ""
+  title: ""
+  created_at: ""
+  framework_state: "INTAKE | DISCOVERY | DECISION | BUILD | VERIFY | RELEASE_READY | OBSERVE | LEARN"
+  risk_tier: "R0 | R1 | R2 | R3"
+  human_owner: ""
+  outcome_and_non_goals: []
+  facts:
+    - statement: ""
+      evidence: ""
+  assumptions_and_unknowns:
+    - statement: ""
+      validation_or_escalation: ""
+  required_artifacts: []
+  selected_roles:
+    - role: ""
+      question_owned: ""
+      why_required_now: ""
+      input_evidence: []
+      expected_handoff: ""
+  deliberately_not_selected:
+    - role: ""
+      reason: ""
+  allowed_actions:
+    - ""
+  blocked_actions_and_human_approvals:
+    - action: ""
+      approver: ""
+      approval_evidence: ""
+  budgets:
+    max_iterations: 0
+    max_parallel_roles: 0
+    allowed_file_scope: []
+    allowed_environment: "research | local | sandbox | staging"
+  validation_and_stop_conditions:
+    - ""
+  audit_links: []
+  next_state_condition: ""

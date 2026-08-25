@@ -1,0 +1,31 @@
+sources:
+  - source_id: src-nginx-proxy-module-current
+    title: ngx_http_proxy_module
+    author_or_organization: nginx.org
+    url: https://nginx.org/en/docs/http/ngx_http_proxy_module.html
+    source_kind: official-doc
+    access_class: A
+    version_or_date: "current documentation; accessed 2026-08-25"
+    license_or_terms: "Public official documentation; directives can differ by OSS/Plus and Nginx version."
+    claim_scope: "proxy_pass, upstream connection behavior, buffering, caching, timeouts and header controls."
+    review_due: 2026-11-25
+  - source_id: src-nginx-load-balancing-current
+    title: Using nginx as HTTP load balancer
+    author_or_organization: nginx.org
+    url: https://nginx.org/en/docs/http/load_balancing.html
+    source_kind: official-doc
+    access_class: A
+    version_or_date: "current documentation; accessed 2026-08-25"
+    license_or_terms: "Public official documentation; clearly distinguish OSS and Plus-only features."
+    claim_scope: "Upstream algorithms, weights, passive health checks, load-balancing behavior."
+    review_due: 2026-11-25
+  - source_id: src-nginx-rate-limit-current
+    title: Limiting Access to Proxied HTTP Resources
+    author_or_organization: F5 NGINX Documentation
+    url: https://docs.nginx.com/nginx/admin-guide/security-controls/controlling-access-proxied-http/
+    source_kind: official-doc
+    access_class: A
+    version_or_date: "current documentation; accessed 2026-08-25"
+    license_or_terms: "Public official documentation; validate directive availability in deployed edition/version."
+    claim_scope: "Connection limits, request-rate limits, dry-run, burst/delay behavior and memory sizing notes."
+    review_due: 2026-11-25

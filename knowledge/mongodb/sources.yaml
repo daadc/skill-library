@@ -1,0 +1,41 @@
+sources:
+  - source_id: src-mongodb-replication-current
+    title: Replication
+    author_or_organization: MongoDB Manual
+    url: https://www.mongodb.com/docs/manual/replication/
+    source_kind: official-doc
+    access_class: A
+    version_or_date: "current manual; accessed 2026-08-25"
+    license_or_terms: "Public official documentation; behavior depends on MongoDB/server-driver version and deployment topology."
+    claim_scope: "Replica-set topology, elections, replication lag, read preference, read/write concerns and failover."
+    review_due: 2026-11-25
+  - source_id: src-mongodb-sharding-current
+    title: Sharding
+    author_or_organization: MongoDB Manual
+    url: https://www.mongodb.com/docs/manual/sharding/
+    source_kind: official-doc
+    access_class: A
+    version_or_date: "current manual; accessed 2026-08-25"
+    license_or_terms: "Public official documentation."
+    claim_scope: "Sharded-cluster concepts, data distribution and operational constraints."
+    review_due: 2026-11-25
+  - source_id: src-mongodb-transactions-current
+    title: Transactions
+    author_or_organization: MongoDB Manual
+    url: https://www.mongodb.com/docs/manual/core/transactions/
+    source_kind: official-doc
+    access_class: A
+    version_or_date: "current manual; accessed 2026-08-25"
+    license_or_terms: "Public official documentation."
+    claim_scope: "Transaction usage, isolation behavior and operational cautions."
+    review_due: 2026-11-25
+  - source_id: src-book-mongodb-definitive-guide
+    title: MongoDB: The Definitive Guide
+    author_or_organization: Shannon Bradshaw, Kristina Chodorow, Eoin Brazil
+    url: https://www.oreilly.com/library/view/mongodb-the-definitive/9781491954455/
+    source_kind: user-owned-book
+    access_class: C
+    version_or_date: "Third edition"
+    license_or_terms: "Use only from a lawful user copy and only for private, non-substitutive knowledge cards."
+    claim_scope: "Private study questions; current MongoDB manual overrides version-specific implementation claims."
+    review_due: 2027-01-01

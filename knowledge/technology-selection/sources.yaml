@@ -1,0 +1,37 @@
+sources:
+  - source_id: src-go-net-http-1-27
+    title: Go standard library — net/http
+    author_or_organization: Go Project
+    url: https://pkg.go.dev/net/http
+    source_kind: official-language-documentation
+    access_class: A
+    version_or_date: "go1.27.0 page; accessed 2026-08-25"
+    claim_scope: "HTTP clients/servers, transport reuse, context, server configuration and graceful shutdown APIs."
+    review_due: 2027-02-19
+  - source_id: src-go-database-access
+    title: Go — Accessing relational databases
+    author_or_organization: Go Project
+    url: https://go.dev/doc/database/
+    source_kind: official-language-documentation
+    access_class: A
+    version_or_date: "accessed 2026-08-25"
+    claim_scope: "database/sql, transactions, cancellation, connection pools and high-level ORM alternatives."
+    review_due: 2027-02-25
+  - source_id: src-gorm-guides-2026
+    title: GORM Guides
+    author_or_organization: GORM
+    url: https://gorm.io/docs/index.html
+    source_kind: official-project-documentation
+    access_class: A
+    version_or_date: "page updated 2026-08-04; accessed 2026-08-25"
+    claim_scope: "GORM models, associations, transactions, context, migrations, SQL builder, generics, logging and plugins."
+    review_due: 2027-02-04
+  - source_id: src-openapi-3-2-2025
+    title: OpenAPI Specification v3.2.0
+    author_or_organization: OpenAPI Initiative
+    url: https://spec.openapis.org/oas/v3.2.0.html
+    source_kind: official-standard
+    access_class: A
+    version_or_date: "published 2025-09-19; accessed 2026-08-25"
+    claim_scope: "Language-agnostic HTTP API descriptions and tooling uses."
+    review_due: 2026-09-19

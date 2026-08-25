@@ -1,0 +1,41 @@
+sources:
+  - source_id: src-kafka-introduction-4-3
+    title: Apache Kafka Introduction
+    author_or_organization: Apache Kafka
+    url: https://kafka.apache.org/documentation/
+    source_kind: official-doc
+    access_class: A
+    version_or_date: "Apache Kafka 4.3.x documentation; accessed 2026-08-25"
+    license_or_terms: "Apache License 2.0; preserve attribution and verify client/broker compatibility before use."
+    claim_scope: "Event streaming, brokers, clients, topics, partitions, replication, producer/consumer concepts and core APIs."
+    review_due: 2026-10-25
+  - source_id: src-kafka-design-4-3
+    title: Apache Kafka Design
+    author_or_organization: Apache Kafka
+    url: https://kafka.apache.org/documentation/#design
+    source_kind: official-doc
+    access_class: A
+    version_or_date: "Apache Kafka 4.3.x documentation; accessed 2026-08-25"
+    license_or_terms: "Apache License 2.0."
+    claim_scope: "Design guarantees, replication, delivery behavior, offsets and storage design."
+    review_due: 2026-10-25
+  - source_id: src-kafka-operations-4-3
+    title: Apache Kafka Operations
+    author_or_organization: Apache Kafka
+    url: https://kafka.apache.org/documentation/#operations
+    source_kind: official-doc
+    access_class: A
+    version_or_date: "Apache Kafka 4.3.x documentation; accessed 2026-08-25"
+    license_or_terms: "Apache License 2.0."
+    claim_scope: "Broker operations, configuration and production administration."
+    review_due: 2026-10-25
+  - source_id: src-book-kafka-definitive-guide-2e
+    title: Kafka: The Definitive Guide, 2nd Edition
+    author_or_organization: Gwen Shapira, Todd Palino, Rajini Sivaram
+    url: https://www.oreilly.com/library/view/kafka-the-definitive/9781492043072/
+    source_kind: user-owned-book
+    access_class: C
+    version_or_date: "Second edition"
+    license_or_terms: "Use only from a lawful user copy and only for private, non-substitutive knowledge cards."
+    claim_scope: "Private study and design questions; current Apache documentation is required for version-specific operations."
+    review_due: 2027-01-01

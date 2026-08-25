@@ -1,0 +1,28 @@
+sources:
+  - source_id: src-shopify-modular-monolith-2019
+    title: Shopify Engineering — Deconstructing the Monolith
+    author_or_organization: Shopify Engineering
+    url: https://shopify.engineering/deconstructing-monolith-designing-software-maximizes-developer-productivity
+    source_kind: production-case-study
+    access_class: A
+    version_or_date: "published 2019-02-21; accessed 2026-08-25"
+    claim_scope: "Modular-monolith evolution, domain boundaries, data ownership and automated boundary checks."
+    review_due: 2027-02-21
+  - source_id: src-aws-cell-architecture-2023
+    title: AWS Well-Architected — Reducing the Scope of Impact with Cell-Based Architecture
+    author_or_organization: AWS
+    url: https://docs.aws.amazon.com/wellarchitected/latest/reducing-scope-of-impact-with-cell-based-architecture/reducing-scope-of-impact-with-cell-based-architecture.html
+    source_kind: official-architecture-guidance
+    access_class: A
+    version_or_date: "published 2023-09-20; accessed 2026-08-25"
+    claim_scope: "Workload-level fault isolation, resilience, predictability and testability."
+    review_due: 2026-12-20
+  - source_id: src-netflix-video-microservices-2024
+    title: Netflix TechBlog — Rebuilding Netflix Video Processing Pipeline with Microservices
+    author_or_organization: Netflix Technology Blog
+    url: https://netflixtechblog.com/rebuilding-netflix-video-processing-pipeline-with-microservices-4e5e6310e359
+    source_kind: production-case-study
+    access_class: A
+    version_or_date: "published 2024-01-10; accessed 2026-08-25"
+    claim_scope: "Incremental migration from coupled release train to domain-oriented microservices and use-case-specific orchestration."
+    review_due: 2027-01-10

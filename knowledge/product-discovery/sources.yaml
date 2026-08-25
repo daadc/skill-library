@@ -1,0 +1,19 @@
+sources:
+  - source_id: src-svpg-discovery-2020
+    title: SVPG — Discovery: Problem vs. Solution
+    author_or_organization: Marty Cagan / Silicon Valley Product Group
+    url: https://www.svpg.com/discovery-problem-vs-solution/
+    source_kind: original-practitioner-article
+    access_class: A
+    version_or_date: "published 2020-09-04; accessed 2026-08-25"
+    claim_scope: "Product, design and engineering jointly assess value, usability, feasibility and viability."
+    review_due: 2027-02-25
+  - source_id: src-nng-ux-methods-2026
+    title: Nielsen Norman Group — When to Use Which User-Experience Research Methods
+    author_or_organization: Christian Rohrer / Nielsen Norman Group
+    url: https://www.nngroup.com/articles/which-ux-research-methods/
+    source_kind: practitioner-research-guidance
+    access_class: A
+    version_or_date: "last reviewed 2026-07-15; accessed 2026-08-25"
+    claim_scope: "Selecting research methods by evidence type, context and product-development phase."
+    review_due: 2027-01-15

@@ -1,0 +1,37 @@
+sources:
+  - source_id: src-google-cascading-failures
+    title: Google SRE — Addressing Cascading Failures
+    author_or_organization: Google SRE
+    url: https://sre.google/sre-book/addressing-cascading-failures/
+    source_kind: official-engineering-practice
+    access_class: A
+    version_or_date: "accessed 2026-08-25"
+    claim_scope: "Overload, resource exhaustion, queues, load shedding, graceful degradation, retries and capacity planning."
+    review_due: 2027-02-25
+  - source_id: src-aws-timeout-retry-jitter-2026
+    title: AWS Builder Center — Timeouts, retries, and backoff with jitter
+    author_or_organization: AWS Builder Center
+    url: https://builder.aws.com/content/3EumjoZascWd1oZiEgL8ORlv3qE/timeouts-retries-and-backoff-with-jitter
+    source_kind: official-engineering-practice
+    access_class: A
+    version_or_date: "page updated 2026-06-15; accessed 2026-08-25"
+    claim_scope: "Remote-call timeouts, idempotency, capped exponential backoff, jitter, retry placement and retry throttling."
+    review_due: 2026-12-15
+  - source_id: src-ms-circuit-breaker-2025
+    title: Microsoft Azure Architecture Center — Circuit Breaker pattern
+    author_or_organization: Microsoft
+    url: https://learn.microsoft.com/en-us/azure/architecture/patterns/circuit-breaker
+    source_kind: official-architecture-pattern
+    access_class: A
+    version_or_date: "page dated 2025-03-21; accessed 2026-08-25"
+    claim_scope: "Closed/Open/Half-Open states, quick failure, recovery probing, observability and applicability."
+    review_due: 2026-11-21
+  - source_id: src-ms-bulkhead-2026
+    title: Microsoft Azure Architecture Center — Bulkhead pattern
+    author_or_organization: Microsoft
+    url: https://learn.microsoft.com/en-us/azure/architecture/patterns/bulkhead
+    source_kind: official-architecture-pattern
+    access_class: A
+    version_or_date: "page updated 2026-03-19; accessed 2026-08-25"
+    claim_scope: "Pool, queue, instance and tenant isolation; cascading-failure containment."
+    review_due: 2027-03-19

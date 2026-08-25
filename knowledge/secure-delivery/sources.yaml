@@ -1,0 +1,37 @@
+sources:
+  - source_id: src-github-protected-branches-2026
+    title: GitHub Docs — About protected branches
+    author_or_organization: GitHub
+    url: https://docs.github.com/repositories/configuring-branches-and-merges-in-your-repository/defining-the-mergeability-of-pull-requests/about-protected-branches
+    source_kind: official-product-documentation
+    access_class: A
+    version_or_date: "accessed 2026-08-25"
+    claim_scope: "Branch protection, pull-request review, status checks, CODEOWNERS, merge queues and bypass controls."
+    review_due: 2027-02-25
+  - source_id: src-docker-build-best-practices-2026
+    title: Docker Docs — Building best practices
+    author_or_organization: Docker
+    url: https://docs.docker.com/build/building/best-practices/
+    source_kind: official-product-documentation
+    access_class: A
+    version_or_date: "accessed 2026-08-25"
+    claim_scope: "Multi-stage images, base image selection, context, image immutability, digest pinning and CI build/testing."
+    review_due: 2027-02-25
+  - source_id: src-owasp-api-security-2023
+    title: OWASP API Security Top 10
+    author_or_organization: OWASP
+    url: https://owasp.org/API-Security/
+    source_kind: community-security-standard
+    access_class: A
+    version_or_date: "2023 edition; accessed 2026-08-25"
+    claim_scope: "API authorization, authentication, resource consumption, business-flow, SSRF, configuration, inventory and upstream-consumption risks."
+    review_due: 2026-12-31
+  - source_id: src-nist-ssdf-1-1-2026
+    title: NIST Secure Software Development Framework
+    author_or_organization: NIST
+    url: https://csrc.nist.gov/projects/ssdf
+    source_kind: government-standard
+    access_class: A
+    version_or_date: "SP 800-218 v1.1; page updated 2026-04-13; accessed 2026-08-25"
+    claim_scope: "Risk-based secure development practices: Prepare, Protect, Produce Well-Secured Software and Respond to Vulnerabilities."
+    review_due: 2027-04-13
