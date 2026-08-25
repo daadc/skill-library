@@ -163,6 +163,7 @@ class GraphBuilder:
                 headings.append((index, len(match.group(1)), match.group(2)))
 
         domain = _knowledge_domain(relative)
+        document_title = next((title for _, level, title in headings if level == 1), Path(relative).stem)
         for position, (line_start, level, title) in enumerate(headings):
             if level < 2:
                 continue
@@ -178,6 +179,7 @@ class GraphBuilder:
             references = re.findall(r"\[(\d+)\]", content)
             attributes = {
                 "domain": domain,
+                "document_title": document_title,
                 "references": references,
                 "has_risks": bool(re.search(r"风险|risk", content, re.IGNORECASE)),
                 "has_validation": bool(re.search(r"验证|通过条件|validation", content, re.IGNORECASE)),

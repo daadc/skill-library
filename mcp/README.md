@@ -100,6 +100,8 @@ PYTHONPATH=src python3 -m unittest discover -s tests -v
 | [`docs/interaction-contract.md`](docs/interaction-contract.md) | 五个 MCP 工具的输入、输出、错误与安全契约。 |
 | [`docs/verification-report.md`](docs/verification-report.md) | 自动化测试、stdio smoke test 与残余风险记录。 |
 | [`docs/evidence-audit.yaml`](docs/evidence-audit.yaml) | 调研主张、版本范围与权限边界的独立审校记录。 |
+| [`docs/current-repository-validation.md`](docs/current-repository-validation.md) | 当前 `skill-library` 仓库的真实索引、检索与排序改进记录。 |
+| [`docs/ROADMAP.md`](docs/ROADMAP.md) | CLI、持久化索引、检索质量、可选前端与团队治理的分阶段路线图。 |
 
 [1]: https://py.sdk.modelcontextprotocol.io/
 [2]: https://modelcontextprotocol.io/specification/2026-07-28/server/tools

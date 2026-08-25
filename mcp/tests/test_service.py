@@ -92,6 +92,13 @@ def validate_input(value: str) -> str:
         self.assertEqual("knowledge", detail["node"]["kind"])
         self.assertTrue(any(edge["type"] == "cites" for edge in detail["relationships"]))
 
+    def test_document_title_is_searchable_for_each_knowledge_section(self) -> None:
+        self._index()
+        response = self.service.search_knowledge("测试工程知识", kinds=["knowledge"])
+        self.assertTrue(response["matches"])
+        self.assertEqual("knowledge", response["matches"][0]["kind"])
+        self.assertEqual("测试工程知识卡", response["matches"][0]["attributes"]["document_title"])
+
     def test_python_ast_connects_direct_call(self) -> None:
         self._index()
         response = self.service.search_knowledge("validate_input", kinds=["function"])

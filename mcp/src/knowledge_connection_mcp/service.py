@@ -65,7 +65,7 @@ class KnowledgeConnectionService:
         for node in snapshot.nodes.values():
             if node.kind not in wanted:
                 continue
-            score = _score_node(query, node.title, node.content, node.attributes)
+            score = _score_node(query, node.kind, node.title, node.content, node.attributes)
             if score:
                 scored.append((score, node.title.casefold(), node.id))
         scored.sort(key=lambda item: (-item[0], item[1], item[2]))
@@ -244,11 +244,21 @@ def _bounded(value: int, field: str, minimum: int, maximum: int) -> int:
     return value
 
 
-def _score_node(query: str, title: str, content: str, attributes: dict[str, Any]) -> int:
+def _score_node(
+    query: str,
+    kind: str,
+    title: str,
+    content: str,
+    attributes: dict[str, Any],
+) -> int:
     query_folded = query.casefold()
     title_folded = title.casefold()
     content_folded = content.casefold()
     attribute_text = " ".join(str(value) for value in attributes.values()).casefold()
+    document_title = str(attributes.get("document_title", "")).casefold()
+    # This is a knowledge-oriented tool. A knowledge-specific boost is applied
+    # only after textual evidence exists, so unrelated headings never become
+    # candidates merely because of their node type.
     score = 0
     if query_folded in title_folded:
         score += 100
@@ -256,14 +266,20 @@ def _score_node(query: str, title: str, content: str, attributes: dict[str, Any]
         score += 35
     if query_folded in attribute_text:
         score += 20
+    if document_title and query_folded in document_title:
+        score += 60
     query_terms = _search_terms(query)
     for term in query_terms:
         if term in title_folded:
             score += 18
         elif term in content_folded:
             score += 6
+        elif term in document_title:
+            score += 12
         elif term in attribute_text:
             score += 4
+    if score:
+        score += {"knowledge": 55, "scenario": 45, "source": 25}.get(kind, 0)
     return score
 
 
