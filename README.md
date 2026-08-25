@@ -1,98 +1,177 @@
-# Computer Knowledge Distillation Team
+# Computer Knowledge Skill Library
 
-这是一个面向计算机、软件工程、产品、设计和管理知识的**可审计协作 Skill 团队**。它将权威公开资料和用户合法拥有的私有资料，转换为带来源、版本、适用前提、取舍、验证方法和审校记录的知识卡；它不用于复制名人或重建受版权保护书籍。
+一个面向 **AI Agent、软件团队与技术学习者** 的可审计知识与技能库。仓库将工程方法、产品发现、架构、质量、安全交付和运行治理组织为可复用的 **Skill 定义**、带来源的 **知识卡**、可执行的 **协作流程**，并提供一个本地优先的 **MCP（Model Context Protocol）知识检索服务**，让 Agent 可以在代码与知识资产之间进行有定位、可追溯的检索。[1]
 
-## 已部署的团队
+> 目标不是输出脱离语境的“最佳实践清单”，而是让人或 Agent 能够回答：**基于哪些来源和前提做决策、涉及哪些风险、如何验证，以及下一步应由谁负责。**
 
-**14 个 Skill** 同步到 Hermes 用户目录：
+| 你可以在这里获得什么 | 当前内容 |
+|---|---|
+| 可复用的 Agent Skills | 14 个聚焦不同工程职责的 `SKILL.md` 定义，可按宿主环境的安装方式使用。 |
+| 结构化技术知识 | 19 个知识领域，包含来源卡、知识卡、场景和跨领域协作资料。 |
+| 协作与治理框架 | 任务路由、ADR、验收、文档治理、风险测试和证据审校的可追溯模板。 |
+| 本地 MCP 检索 | Python AST、Markdown/YAML 知识图谱、CLI、持久化快照和本地知识工作台。 |
 
-```text
-~/.hermes/skills/computer-team/
+## 适用场景
+
+这个仓库适合希望把“知识、流程与 Agent 行为”连接起来的个人和团队。典型用途包括：将一个模糊工程需求拆解为可验证的任务；为架构评审建立带来源和反例的决策上下文；将团队内部允许使用的资料蒸馏为紧凑知识卡；让 AI 在理解 Python 代码时同时检索相关的技术原则、风险和验证方式；为发布、迁移、权限或性能改动建立明确的人类 owner 与停止条件。
+
+它不试图替代 IDE、生产观测平台、通用向量数据库或完整知识管理 SaaS。MCP 服务默认只读、仅本地运行，不执行被索引代码、不自动联网抓取、不修改源文件，也不会修改任何 MCP 客户端配置。
+
+## 快速开始
+
+### 1. 获取仓库并浏览一个 Skill
+
+```bash
+git clone https://github.com/daadc/skill-library.git
+cd skill-library
+
+# 从团队编排入口开始了解角色路由和交接约束
+cat skills/computer-team-orchestrator/SKILL.md
 ```
 
-| Skill | 职责 |
-|---|---|
-| `/computer-team-orchestrator` | 任务拆解、受约束角色路由、冲突协调和最终合成 |
-| `/technical-knowledge-distiller` | 把许可资料蒸馏为来源卡和知识卡 |
-| `/evidence-safety-auditor` | 来源、版本、版权、风险和事实边界审校 |
-| `/tech-lead-architect` | 架构权衡、ADR、系统演进和跨域评审 |
-| `/backend-runtime-engineer` | Java、Go、Python、Shell、API、并发与服务实现 |
-| `/platform-sre-engineer` | Linux、网络、SRE、可观测性、性能和事故响应 |
-| `/cloud-native-data-platform-engineer` | Kubernetes、Nginx、Redis、MongoDB、Kafka 及跨组件平台工程 |
-| `/resilience-engineering` | 并发预算、超时、重试、熔断、舱壁、限流、降级、级联故障与恢复设计 |
-| `/data-engineer` | PostgreSQL、MySQL、SQL、迁移、索引和恢复 |
-| `/frontend-design-engineer` | React、Vue、组件、UI 状态、可访问性与设计系统 |
-| `/product-discovery-manager` | 问题发现、需求、范围、优先级和验收标准 |
-| `/quality-engineer` | 风险测试、回归、发布门禁和 Agent 评测 |
-| `/documentation-governance-engineer` | Docs-as-Code、ADR/API/迁移/Runbook/发布契约与陈旧性治理 |
-| `/secure-delivery-engineer` | Git/PR/CI-CD、容器制品、API 安全、供应链证据与安全发布审查 |
+Skill 的源文件全部在 [`skills/`](skills/) 下。请选择与你的 Agent 宿主兼容的安装/加载方式；不依赖某一个特定平台。若你本地使用 **Hermes**，可将需要的 Skill 目录复制或同步至 Hermes 识别的技能目录，例如 `~/.hermes/skills/computer-team/`。Hermes 只是一个可选集成示例，不是使用本仓库的前提，也不构成本仓库的唯一运行环境。
 
-建议新开 Hermes 会话后，从：
+### 2. 从一个窄问题开始使用知识库
+
+不要一次性要求 Agent “掌握整个领域”。先选择一个有明确决策边界的问题，并指定来源、适用条件、风险和验收方式。例如：
 
 ```text
-/computer-team-orchestrator
-```
-
-开始描述任务。编排 Skill 会在风险等级、停止条件和人类 owner 约束内，只路由最少必要的专家，并要求使用结构化交接。
-
-## 核心文件
-
-| 文件 | 用途 |
-|---|---|
-| `SOURCE_CANDIDATES.md` | 已核验的权威公开资料、书籍候选、链接与使用边界 |
-| `TEAM_BLUEPRINT.md` | 14 个角色的责任边界、协作路由和交接契约 |
-| `ROADMAP_COVERAGE_GAP_ANALYSIS.md` | roadmap.sh 作为能力地图时的合规边界、覆盖差距与补全优先级 |
-| `knowledge/` | 当前目录下所有已蒸馏的领域知识、来源卡、知识卡与场景卡 |
-| `DISTILLATION_WORKFLOW.md` | 资料准入、来源卡、知识卡、场景卡、评测卡和质量门禁 |
-| `TEAM_TEST_PLAN.md` | 功能、迁移、事故和版权边界的测试场景 |
-| `skills/*/SKILL.md` | 可独立安装或迭代的 Team Skill 源码 |
-
-## 第一轮 P0 补全：安全交付、测试、可观测性与性能
-
-本轮不把 roadmap.sh 当作内容资料库。其站点只作为高层能力导航；根据其条款，不复制、抓取、存储、再分发其具体材料，也不把该材料用于模型训练或批量蒸馏。[1] 新知识均由独立核验的官方/标准/原始资料写成原创、可验证的知识卡。
-
-| 已补齐领域 | 目录 | 核心决策能力 | 默认协作路由 |
-|---|---|---|---|
-| 安全交付 | `knowledge/secure-delivery/` | 受保护分支、PR/CI、CODEOWNER、容器制品、SSDF、API 授权与发布证据 | 安全交付 → 后端/平台/质量/文档治理 → 人类 owner（按风险） |
-| 测试工程 | `knowledge/testing-engineering/` | 风险测试、真实度/隔离度、API/event 契约、迁移与回归选择 | 质量 → 后端/数据/前端/平台 → 文档治理（按变更） |
-| 可观测性与性能 | `knowledge/observability-performance/` | OTel 信号、SLI/SLO、告警、性能实验、容量与发布观察 | SRE → 实现 owner/质量/韧性 → 文档治理（按风险） |
-
-每个包均含 `sources.yaml`、`knowledge-cards.md` 和 `scenarios.md`，将前提、风险、验证和多角色协作场景与来源关联。它们补的是高优先级能力缺口，**并不表示已完成 roadmap.sh 的全部路径**。
-
-## 后续优先级
-
-| 优先级 | 下一批能力 | 采取方式 |
-|---|---|---|
-| P1 | Terraform/IaC、实际云平台、PostgreSQL/MySQL 深化、System Design 与网络 | 先确认语言、云厂商和项目约束，再从官方资料建立窄主题知识包 |
-| P2 | 具体前端构建/发布、移动端、特定消息/数据栈的扩展 | 仅在真实需求出现且现有领域包无法覆盖时补充 |
-
-## 第一次使用：先蒸馏一个窄主题
-
-不要从“整本书”或“整个领域”开始。选一个有明确决策边界的问题，例如：
-
-```text
-使用 /technical-knowledge-distiller，基于 PostgreSQL 官方文档，
+使用 technical-knowledge-distiller，基于 PostgreSQL 官方文档，
 蒸馏“为多租户订单查询新增索引前需要收集和验证哪些证据”。
-请创建来源卡和知识卡；标明版本、适用条件、候选方案、风险和验证步骤。
+请生成来源卡和知识卡，标明版本、适用条件、候选方案、风险和验证步骤。
 ```
 
-然后交给：
+然后由 `evidence-safety-auditor` 审查来源质量、版本、版权边界和未经证实的推断；对于涉及发布、权限或数据迁移的变更，再加入相应的安全、质量、平台或数据角色。
+
+### 3. 启动 MCP 知识检索服务
+
+[`mcp/`](mcp/) 将知识卡、场景、`sources.yaml` 与 Python AST 转换为本地图谱。它要求 **Python 3.10+**；以下示例使用 `uv`：
+
+```bash
+cd mcp
+
+# 首次构建，后续相同工作树会加载本地快照
+uv run knowledge-connection --root .. index
+
+# 搜索知识、场景和代码符号
+uv run knowledge-connection --root .. --json search "安全交付" --kind knowledge --limit 5
+
+# 使用版本化离线案例检查检索回归
+uv run knowledge-connection --root .. --json eval --cases evals/retrieval_cases.json
+
+# 启动仅绑定本机回环地址的知识工作台
+uv run knowledge-connection --root .. workbench --port 8765
+```
+
+首次索引会在目标根目录创建可删除重建的 `.knowledge-connection/graph.sqlite3`。该目录仅保存派生状态，已被 Git 忽略；服务不会修改被索引代码或知识文件。
+
+## MCP：为 Agent 提供可追溯检索
+
+MCP 是本仓库连接 Agent 与知识资产的主要集成面。服务通过 stdio 公开结构化工具，结果始终携带相对路径、行号、节点类型和关系理由；调用者应将检索结果视为**待审阅证据**，而不是自动执行授权。[1]
+
+| MCP 工具 | 用途 |
+|---|---|
+| `index_repository` | 构建或加载允许根目录的本地持久图谱。 |
+| `index_status` | 查看本地派生快照是否存在及其统计信息。 |
+| `refresh_repository` | 显式刷新图谱；仅写入 `.knowledge-connection/` 派生状态。 |
+| `search_knowledge` | 搜索知识卡、场景、来源与 Python 符号。 |
+| `get_node` | 返回节点正文、相对定位和直接关系。 |
+| `explore_connections` | 在深度和数量上限内浏览局部关系。 |
+| `build_context_pack` | 在字符预算内生成保留定位和引用的 Agent 上下文包。 |
+
+你可以在自己的 MCP 客户端中手动添加如下配置。请将路径替换为本机仓库绝对路径；本项目不会自动写入客户端配置。
+
+```json
+{
+  "mcpServers": {
+    "knowledge-connection": {
+      "command": "uv",
+      "args": [
+        "run",
+        "--directory",
+        "/absolute/path/to/skill-library/mcp",
+        "knowledge-connection-mcp",
+        "--root",
+        "/absolute/path/to/skill-library"
+      ]
+    }
+  }
+}
+```
+
+MCP 还附带可脚本化的 CLI：`index`、`status`、`refresh`、`search`、`node`、`connections`、`context`、`eval` 与 `workbench`。完整工具契约、边界和验证证据见 [`mcp/README.md`](mcp/README.md)、[`mcp/docs/interaction-contract.md`](mcp/docs/interaction-contract.md) 和 [`mcp/docs/p0-p2-verification-report.md`](mcp/docs/p0-p2-verification-report.md)。
+
+## Skill 团队
+
+Skill 是带职责边界、输入证据、交接产物和质量要求的 Markdown 定义。`computer-team-orchestrator` 负责在风险等级、停止条件和明确人类 owner 的约束内，选择最少必要角色并合成结果；它不替代授权、审批或最终责任人。
+
+| Skill | 主要职责 |
+|---|---|
+| [`computer-team-orchestrator`](skills/computer-team-orchestrator/SKILL.md) | 任务拆解、角色路由、冲突协调与最终合成。 |
+| [`technical-knowledge-distiller`](skills/technical-knowledge-distiller/SKILL.md) | 将许可资料蒸馏为来源卡、知识卡和场景。 |
+| [`evidence-safety-auditor`](skills/evidence-safety-auditor/SKILL.md) | 审校来源、版本、版权、风险与事实边界。 |
+| [`tech-lead-architect`](skills/tech-lead-architect/SKILL.md) | 架构权衡、ADR、系统演进与跨域评审。 |
+| [`backend-runtime-engineer`](skills/backend-runtime-engineer/SKILL.md) | 后端运行时、API、并发、服务实现和调试。 |
+| [`platform-sre-engineer`](skills/platform-sre-engineer/SKILL.md) | Linux、网络、SRE、可观测性、性能与事故响应。 |
+| [`cloud-native-data-platform-engineer`](skills/cloud-native-data-platform-engineer/SKILL.md) | Kubernetes、Nginx、Redis、MongoDB、Kafka 与平台工程。 |
+| [`resilience-engineering`](skills/resilience-engineering/SKILL.md) | 超时、重试、熔断、限流、降级与恢复设计。 |
+| [`data-engineer`](skills/data-engineer/SKILL.md) | PostgreSQL、MySQL、SQL、迁移、索引与恢复。 |
+| [`frontend-design-engineer`](skills/frontend-design-engineer/SKILL.md) | 前端组件、状态、可访问性与设计系统。 |
+| [`product-discovery-manager`](skills/product-discovery-manager/SKILL.md) | 问题发现、需求、范围、优先级与验收。 |
+| [`quality-engineer`](skills/quality-engineer/SKILL.md) | 风险测试、回归、发布门禁与 Agent 评测。 |
+| [`documentation-governance-engineer`](skills/documentation-governance-engineer/SKILL.md) | Docs-as-Code、ADR、Runbook、发布契约与陈旧性治理。 |
+| [`secure-delivery-engineer`](skills/secure-delivery-engineer/SKILL.md) | Git/PR/CI-CD、制品、API 安全、供应链证据与安全发布审查。 |
+
+## 知识库导航
+
+每个知识包通常由 `sources.yaml`、`knowledge-cards.md` 和 `scenarios.md` 组成；它们将原则与来源、假设、风险、验证和跨角色协作场景关联起来。知识卡是工程决策的压缩材料，并不替代原始资料或领域专家审阅。
+
+| 主题 | 目录与示例内容 |
+|---|---|
+| 产品、架构与演进 | [`knowledge/product-discovery/`](knowledge/product-discovery/)、[`knowledge/architecture-patterns/`](knowledge/architecture-patterns/)、[`knowledge/domain-driven-design/`](knowledge/domain-driven-design/)、[`knowledge/refactoring-evolution/`](knowledge/refactoring-evolution/)、[`knowledge/technology-selection/`](knowledge/technology-selection/) |
+| 工程质量与治理 | [`knowledge/development-lifecycle/`](knowledge/development-lifecycle/)、[`knowledge/testing-engineering/`](knowledge/testing-engineering/)、[`knowledge/documentation-governance/`](knowledge/documentation-governance/)、[`knowledge/secure-delivery/`](knowledge/secure-delivery/) |
+| 运行与韧性 | [`knowledge/observability-performance/`](knowledge/observability-performance/)、[`knowledge/resilience-engineering/`](knowledge/resilience-engineering/) |
+| 云原生与数据平台 | [`knowledge/kubernetes/`](knowledge/kubernetes/)、[`knowledge/nginx/`](knowledge/nginx/)、[`knowledge/kafka/`](knowledge/kafka/)、[`knowledge/redis/`](knowledge/redis/)、[`knowledge/mongodb/`](knowledge/mongodb/) |
+| 跨域框架 | [`knowledge/shared/`](knowledge/shared/) 中的受约束 Agent 开发、复杂系统交付、协作场景和研究登记。 |
+
+## 项目结构
 
 ```text
-/evidence-safety-auditor 审查这张知识卡的来源、版本、版权和未证实推断。
+skill-library/
+├── skills/                 # 可复用 Skill 定义
+├── knowledge/              # 来源卡、知识卡、场景与共享框架
+├── templates/              # ADR、交互契约等可复用文档模板
+├── mcp/                    # 本地 Knowledge Connection MCP、CLI、工作台与测试
+├── DISTILLATION_WORKFLOW.md
+├── TEAM_BLUEPRINT.md
+├── TEAM_TEST_PLAN.md
+├── SOURCE_CANDIDATES.md
+└── ROADMAP_COVERAGE_GAP_ANALYSIS.md
 ```
 
-对于 API 改动和容器发布，追加 `/secure-delivery-engineer`；对于风险测试和发布观察，追加 `/quality-engineer` 与 `/platform-sre-engineer`。所有 R2/R3 变更仍必须有明确人类 owner 批准。
+## 知识准入、版权与安全边界
 
-## 资料准入原则
+| 资料类型 | 处理方式 |
+|---|---|
+| 官方文档、RFC、开放论文、明确开放许可的原作者文章 | 可作为公开知识蒸馏的候选来源，但仍须记录版本、适用范围和引用。 |
+| 合法拥有的书籍、课程或内部文档 | 可在私有环境内做受限蒸馏；不得推送受保护原文或可替代原文的长篇复述。 |
+| 盗版扫描件、绕过付费墙内容、无出处转载或无法确认版本的材料 | 不应纳入知识库或作为训练/蒸馏来源。 |
+| 人或 Agent 生成的推断 | 必须标明为推断，并与已验证来源、约束和验证方法区分。 |
 
-- **可直接使用**：官方文档、RFC、开放论文、明确开放许可的原作者文章。
-- **可私有蒸馏**：你合法拥有的书籍、课程、公司文档。不得推送公开仓库或生成可替代原文的长篇内容。
-- **不能使用**：盗版扫描件、付费墙绕过、无出处转载、无法确认版本的材料。
-- **不做作者分身**：将名人的公开观点写为有出处的工程原则；不得命令 Skill 冒充在世作者。
+对高影响操作，例如生产发布、权限调整、批量修改、外部发送或数据迁移，Agent 的检索结论只能用于准备建议、预演和审阅；具体执行仍需遵循项目自己的授权、审批、审计与回退流程。
 
-所有新蒸馏知识统一写入当前项目的 `knowledge/` 目录，不写入 Hermes 安装目录；Hermes 只保存可执行的 Skill 定义。
+## 验证与演进
 
-## References
+MCP 当前已经覆盖 Python AST、Markdown/YAML 知识、SQLite 本地快照、Markdown 文件级增量刷新、CLI、stdio 协议和仅回环地址的工作台。测试命令和验证记录位于 [`mcp/README.md`](mcp/README.md) 与 [`mcp/docs/p0-p2-verification-report.md`](mcp/docs/p0-p2-verification-report.md)。
 
-[1]: https://roadmap.sh/terms
+后续是否加入多语言解析、语义检索、远程访问、认证、协作写入或团队治理，将以真实使用证据为前提，并先更新 ADR、权限模型、评测和发布门禁；不会由当前本地只读服务自动开启。参见 [`mcp/docs/ROADMAP.md`](mcp/docs/ROADMAP.md)。
+
+## 贡献与使用说明
+
+欢迎通过 Issue 或 Pull Request 提交可复现的缺口、错误来源、改进建议、测试用例或新的窄主题知识包。提交知识内容时，请保留来源、版本、适用条件、风险、验证方式和版权边界；提交 Skill 时，请说明职责边界、输入、输出、停止条件和评测方式。
+
+仓库当前**未包含许可证文件**。在复制、再发布或用于生产环境前，请先与维护者确认适用的使用许可和责任边界。
+
+## 参考资料
+
+[1]: https://modelcontextprotocol.io/
