@@ -1,0 +1,23 @@
+audit:
+  status: "pass-with-conditions"
+  reviewed_artifact: "mcp/docs/research-notes.md, mcp/docs/adr-0001-local-knowledge-graph.md, mcp/README.md"
+  verified_claims:
+    - claim: "参考项目采用本地 AST/LSP 知识图谱并暴露 MCP 工具。"
+      evidence: "https://github.com/DeusData/codebase-memory-mcp (README, accessed 2026-08-25)"
+      limitation: "不将参考项目的语言覆盖或性能数字移植为本实现承诺。"
+    - claim: "MCP 工具由模型发现/调用，服务公开工具能力与工具输入 schema；规范建议保留人在环控制。"
+      evidence: "https://modelcontextprotocol.io/specification/2026-07-28/server/tools"
+      limitation: "具体客户端的确认 UI 由客户端而非本服务实现。"
+    - claim: "官方 Python SDK 用于构建 MCP 服务，且当前本地 mcp 1.28.1 可运行 stdio 服务。"
+      evidence: "https://py.sdk.modelcontextprotocol.io/；本地 stdio smoke test 2026-08-25"
+      limitation: "通过范围为 Python 3.10.8 与已安装 SDK 版本；其他版本须重新验证。"
+  unsupported_or_stale_claims: []
+  copyright_or_license_issues:
+    - "未复制参考项目代码或大段内容；仅以其公开 README 作为架构方向来源。"
+  risk_gates_required:
+    - "不得自动修改 MCP 客户端配置、发布、部署或注册服务；这些动作须由用户明确批准。"
+    - "服务不提供读取允许根以外文件、写入被索引项目、代码执行或网络访问能力。"
+  remediation:
+    - "真实使用出现多语言、持久化、网络或写操作需求时，新建 ADR、交互契约与风险评审。"
+    - "SDK 升级或 MCP 规范主版本变化时，重跑单元测试和 stdio smoke test。"
+  recheck_trigger: "MCP SDK 升级、工具契约变更、解析器范围扩展、持久化/网络/写工具需求，或计划发布时。"
